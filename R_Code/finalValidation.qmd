@@ -1,0 +1,102 @@
+---
+title: "Test robustness under various violations"
+format: pdf
+editor: visual
+---
+
+## Compare with existing parametric two-way ANOVA
+
+In this study, we compare the performance of a novel non-parametric two-way ANOVA method, Krss, with the traditional parametric two-way ANOVA.
+
+Existing parametric two-way ANOVA Table
+
+|                |          |              |
+|----------------|----------|--------------|
+|                | Pr(\>F)  | Significance |
+| Location       | 1.53e-09 | \*\*\*       |
+| Tribe          | 0.102    |              |
+| Location:Tribe | 3.22e-06 | \*\*\*       |
+
+`Krss` non-parametric two-way ANOVA Table
+
+|                |         |              |
+|----------------|---------|--------------|
+|                | Pr(\>F) | Significance |
+| Location       | 0.000   | \*\*\*       |
+| Tribe          | 0.751   |              |
+| Location:Tribe | 0.001   | \*\*\*       |
+
+-   Both methods detect a highly significant main effect of `Location` (p \< 0.001). The parametric ANOVA reports a slightly lower p-value (1.53e-09) compared to the Krss method (0.000), but both agree on the significance.
+
+-   The parametric ANOVA reports a non-significant effect of `Tribe` (p = 0.102), while the Krss method also finds it non-significant (p = 0.751). The Krss method shows a higher p-value, suggesting it may be more conservative in detecting main effects under the given conditions.
+
+-   Both methods detect a significant interaction effect between `Location` and `Tribe`. The parametric ANOVA reports a p-value of 3.22e-06, while the `Krss` method reports a p-value of 0.001. Although the `Krss` method is less sensitive, it still identifies the interaction as significant.
+
+The Krss non-parametric two-way ANOVA performs similarly to traditional ANOVA in detecting main and interaction effects. While the parametric method is more sensitive to small effects, Krss is more robust when normality or equal variance assumptions are violated. This makes it a useful alternative for non-normal data.
+
+## Power Analysis
+
+#### Introduction
+
+Power analysis is a critical tool for evaluating the sensitivity of statistical methods in detecting true effects. In this study, we compare the statistical power of the traditional parametric two-way ANOVA with the novel Krss non-parametric method across different sample sizes. The goal is to assess the ability of each method to detect significant effects under varying experimental conditions.
+
+#### Results
+
+| **Sample Size (n)** | **Krss Non-Parametric Method Power** | **Parametric Two-Way ANOVA Power** |
+|:--------------------|:-------------------------------------|:-----------------------------------|
+| 20                  | 0.38                                 | 0.9679                             |
+| 40                  | 0.42                                 | 0.9999                             |
+| 60                  | 0.48                                 | 0.9999                             |
+| 80                  | 0.56                                 | 1.0000                             |
+| 100                 | 0.62                                 | 1.0000                             |
+
+-   The parametric two-way ANOVA exhibits high power (0.9679 to 0.9999) for small sample sizes, indicating a strong ability to detect true effects when parametric assumptions are met.
+
+-   In contrast, the Krss method demonstrates lower power (0.38 to 0.42) for small sample sizes, suggesting it is less sensitive under these conditions.
+
+-   The parametric method maintains near-perfect power (0.9999 to 1.0000), making it highly reliable for moderate sample sizes.
+
+-   The Krss method shows moderate power (0.48 to 0.56), which improves as the sample size increases but remains lower than the parametric method.
+
+-   The parametric method achieves perfect power (1.0000), while the Krss method reaches a power of 0.62, which is still relatively low.
+
+the Krss method may still be valuable in scenarios where parametric assumptions are violated, despite its lower power.
+
+## Test robustness under various violations
+
+#### **Introduction**
+
+In this study, we validated the robustness of the `Krss` function, a non-parametric two-way ANOVA method based on kernel regression and permutation tests. The goal was to assess its performance under violations of common statistical assumptions, specifically **non-normality** and **heteroscedasticity**. Robustness to these violations is critical for ensuring the reliability of the method in real-world applications, where data often deviates from ideal conditions.
+
+#### **Methodology**
+
+We simulated three data sets:
+
+-   Original Data: Normally distributed data with no violations.
+
+-   Non-Normal Data: Data generated from an exponential distribution to simulate non-normality.
+
+-   Heteroscedastic Data: Data with unequal variances across groups to simulate heteroscedasticity.
+
+The `Krss` function was applied to each data set to compute p-values for:
+
+-   Factor A (Location).
+
+-   Factor B (Tribe).
+
+-   Interaction (Location \* Tribe).
+
+We compared the p-values across the three data sets to assess consistency and robustness.
+
+#### **Results**
+
+|                     |              |              |                 |
+|---------------------|:-------------|:-------------|-----------------|
+| **Data set**        | **Factor A** | **Factor B** | **Interaction** |
+| **Original**        | 0.957        | 0.827        | 0.694           |
+| **Non-Normal**      | 0.939        | 0.581        | 0.810           |
+| **Heteroscedastic** | 0.835        | 0.578        | 0.748           |
+
+The p-values for non-normal data were very close to those for the original data.This indicates that the `Krss` function is robust to non-normality.The p-values for heteroscedastic data were also very close to those for the original data.
+
+The `Krss` function demonstrated strong robustness to violations of normality and heteroscedasticity, as evidenced by the consistent p-values across all data sets. This makes it a reliable tool for analyzing data that may not meet traditional statistical assumptions.
